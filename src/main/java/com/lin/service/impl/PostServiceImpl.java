@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
+import com.lin.common.ErrorCode;
 import com.lin.constant.CommonConstant;
 import com.lin.exception.BusinessException;
 import com.lin.exception.ThrowUtils;
-import com.lin.service.PostService;
-import com.lin.service.UserService;
-import com.lin.common.ErrorCode;
 import com.lin.mapper.PostFavourMapper;
 import com.lin.mapper.PostMapper;
 import com.lin.mapper.PostThumbMapper;
@@ -21,15 +19,9 @@ import com.lin.model.entity.PostThumb;
 import com.lin.model.entity.User;
 import com.lin.model.vo.PostVO;
 import com.lin.model.vo.UserVO;
+import com.lin.service.PostService;
+import com.lin.service.UserService;
 import com.lin.utils.SqlUtils;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -47,10 +39,13 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * 帖子服务实现
- *
-
  */
 @Service
 @Slf4j
@@ -306,6 +301,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         }).collect(Collectors.toList());
         postVOPage.setRecords(postVOList);
         return postVOPage;
+    }
+
+    @Override
+    public Page<PostVO> listPostVOByPage(PostQueryRequest postQueryRequest, long current, long pageSize, HttpServletRequest request) {
+        Page<Post> postPage = this.page(new Page<>(current, pageSize), this.getQueryWrapper(postQueryRequest));
+        return this.getPostVOPage(postPage, request);
     }
 
 }

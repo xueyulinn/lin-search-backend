@@ -9,7 +9,6 @@ import com.lin.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.Map;
  * @author 薛坤
  * @version 1.0
  */
-@Component
+// @Component
 @Slf4j
 public class FetchInitPostList implements CommandLineRunner {
 

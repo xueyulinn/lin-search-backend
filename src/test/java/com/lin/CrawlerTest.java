@@ -50,7 +50,6 @@ public class CrawlerTest {
 
             String turl = (String) map.get("turl");
 
-
             //获取标题
             String title = element.select(".inflnk").get(0).attr("aria-label");
 

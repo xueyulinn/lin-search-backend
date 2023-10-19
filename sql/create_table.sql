@@ -26,6 +26,8 @@ create table if not exists user
     index idx_unionId (unionId)
 ) comment '用户' collate = utf8mb4_unicode_ci;
 
+
+
 -- 帖子表
 create table if not exists post
 (
