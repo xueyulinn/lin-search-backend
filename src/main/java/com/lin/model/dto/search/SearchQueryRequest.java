@@ -15,6 +15,12 @@ import java.io.Serializable;
 public class SearchQueryRequest extends PageRequest implements Serializable {
 
     /**
+     * 搜索类型
+     */
+
+    private String type;
+
+    /**
      * 搜索词
      */
     private String searchText;
