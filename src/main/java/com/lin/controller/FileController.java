@@ -1,21 +1,16 @@
 package com.lin.controller;
 
 import cn.hutool.core.io.FileUtil;
-import com.lin.constant.FileConstant;
-import com.lin.exception.BusinessException;
-import com.lin.manager.CosManager;
-import com.lin.service.UserService;
 import com.lin.common.BaseResponse;
 import com.lin.common.ErrorCode;
 import com.lin.common.ResultUtils;
+import com.lin.constant.FileConstant;
+import com.lin.exception.BusinessException;
+import com.lin.manager.CosManager;
 import com.lin.model.dto.file.UploadFileRequest;
 import com.lin.model.entity.User;
 import com.lin.model.enums.FileUploadBizEnum;
-
-import java.io.File;
-import java.util.Arrays;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import com.lin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +19,14 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.Arrays;
+
 /**
  * 文件接口
  *
-
  */
 @RestController
 @RequestMapping("/file")

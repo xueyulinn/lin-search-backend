@@ -19,5 +19,7 @@ public class SearchVO implements Serializable {
 
     private Page<UserVO> userList;
 
+    private Page<Object> page;
+
     private static final long serialVersionUID = 1L;
 }

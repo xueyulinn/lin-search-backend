@@ -2,16 +2,14 @@ package com.lin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
-import com.lin.constant.UserConstant;
-import com.lin.exception.BusinessException;
-import com.lin.exception.ThrowUtils;
-import com.lin.service.PostService;
-import com.lin.service.UserService;
 import com.lin.annotation.AuthCheck;
 import com.lin.common.BaseResponse;
 import com.lin.common.DeleteRequest;
 import com.lin.common.ErrorCode;
 import com.lin.common.ResultUtils;
+import com.lin.constant.UserConstant;
+import com.lin.exception.BusinessException;
+import com.lin.exception.ThrowUtils;
 import com.lin.model.dto.post.PostAddRequest;
 import com.lin.model.dto.post.PostEditRequest;
 import com.lin.model.dto.post.PostQueryRequest;
@@ -19,22 +17,19 @@ import com.lin.model.dto.post.PostUpdateRequest;
 import com.lin.model.entity.Post;
 import com.lin.model.entity.User;
 import com.lin.model.vo.PostVO;
-
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import com.lin.service.PostService;
+import com.lin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 帖子接口
  *
-
  */
 @RestController
 @RequestMapping("/post")

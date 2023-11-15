@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 帖子接口
  *
-
  */
 @RestController
 @RequestMapping("/picture")

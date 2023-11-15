@@ -1,26 +1,25 @@
 package com.lin.controller;
 
-import com.lin.exception.BusinessException;
-import com.lin.service.PostThumbService;
-import com.lin.service.UserService;
 import com.lin.common.BaseResponse;
 import com.lin.common.ErrorCode;
 import com.lin.common.ResultUtils;
+import com.lin.exception.BusinessException;
 import com.lin.model.dto.postthumb.PostThumbAddRequest;
 import com.lin.model.entity.User;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import com.lin.service.PostThumbService;
+import com.lin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 帖子点赞接口
  *
-
  */
 @RestController
 @RequestMapping("/post_thumb")

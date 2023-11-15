@@ -1,47 +1,36 @@
 package com.lin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lin.constant.UserConstant;
-import com.lin.exception.BusinessException;
-import com.lin.exception.ThrowUtils;
-import com.lin.service.UserService;
 import com.lin.annotation.AuthCheck;
 import com.lin.common.BaseResponse;
 import com.lin.common.DeleteRequest;
 import com.lin.common.ErrorCode;
 import com.lin.common.ResultUtils;
 import com.lin.config.WxOpenConfig;
-import com.lin.model.dto.user.UserAddRequest;
-import com.lin.model.dto.user.UserLoginRequest;
-import com.lin.model.dto.user.UserQueryRequest;
-import com.lin.model.dto.user.UserRegisterRequest;
-import com.lin.model.dto.user.UserUpdateMyRequest;
-import com.lin.model.dto.user.UserUpdateRequest;
+import com.lin.constant.UserConstant;
+import com.lin.exception.BusinessException;
+import com.lin.exception.ThrowUtils;
+import com.lin.model.dto.user.*;
 import com.lin.model.entity.User;
 import com.lin.model.vo.LoginUserVO;
 import com.lin.model.vo.UserVO;
-
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.lin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 用户接口
  *
-
  */
 @RestController
 @RequestMapping("/user")

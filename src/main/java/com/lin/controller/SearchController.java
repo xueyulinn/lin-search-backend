@@ -4,28 +4,24 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lin.common.BaseResponse;
 import com.lin.common.ErrorCode;
 import com.lin.common.ResultUtils;
+import com.lin.datasource.*;
 import com.lin.exception.ThrowUtils;
 import com.lin.model.dto.post.PostQueryRequest;
 import com.lin.model.dto.search.SearchQueryRequest;
 import com.lin.model.dto.user.UserQueryRequest;
 import com.lin.model.entity.Picture;
-import com.lin.model.enums.SearchTypeEnum;
 import com.lin.model.vo.PostVO;
 import com.lin.model.vo.SearchVO;
 import com.lin.model.vo.UserVO;
-import com.lin.service.PictureService;
-import com.lin.service.PostService;
-import com.lin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.internal.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 /**
  * @author 薛坤
@@ -35,14 +31,18 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/search")
 public class SearchController {
-    @Autowired
-    private PostService postService;
 
-    @Autowired
-    private PictureService pictureService;
+    @Resource
+    private PictureDataSource pictureDataSource;
 
-    @Autowired
-    private UserService userService;
+    @Resource
+    private PostDataSource postDataSource;
+
+    @Resource
+    private UserDataSource userDataSource;
+
+    @Resource
+    private DataSourceRegistry dataSourceRegistry;
 
     @PostMapping("/all")
     public BaseResponse<SearchVO> listPostVOByPage(@RequestBody SearchQueryRequest searchQueryRequest,
@@ -55,51 +55,40 @@ public class SearchController {
         // 限制爬虫
         ThrowUtils.throwIf(pageSize > 20, ErrorCode.PARAMS_ERROR);
 
-        Page<PostVO> postPage = null;
+        Page<PostVO> postPage;
 
-        Page<Picture> picturePage = null;
+        Page<Picture> picturePage;
 
-        Page<UserVO> userPage = null;
+        Page<UserVO> userPage;
 
         if (StringUtil.isBlank(type)) {
-
             //查询全部
             // 获取文章数据
             PostQueryRequest postQueryRequest = new PostQueryRequest();
             postQueryRequest.setSearchText(searchText);
-            postPage = postService.listPostVOByPage(postQueryRequest, current, pageSize, request);
+            postPage = postDataSource.doSearch(searchText, current, pageSize);
 
             //获取图片数据
-            picturePage = pictureService.search(searchText, current, pageSize);
+            picturePage = pictureDataSource.doSearch(searchText, current, pageSize);
 
             //获取用户数据
             UserQueryRequest userQueryRequest = new UserQueryRequest();
             userQueryRequest.setUserName(searchText);
-            userPage = userService.listUserVOByPage(userQueryRequest, current, pageSize, request);
+            userPage = userDataSource.doSearch(searchText, current, pageSize);
+
+            SearchVO searchVO = new SearchVO();
+            searchVO.setPostList(postPage);
+            searchVO.setPictureList(picturePage);
+            searchVO.setUserList(userPage);
+            return ResultUtils.success(searchVO);
 
         } else {
-            switch (Objects.requireNonNull(SearchTypeEnum.getEnumByValue(type))) {
-                case POST:
-                    // 获取文章数据
-                    PostQueryRequest postQueryRequest = new PostQueryRequest();
-                    postQueryRequest.setSearchText(searchText);
-                    postPage = postService.listPostVOByPage(postQueryRequest, current, pageSize, request);
-                case PICTURE:
-                    //获取图片数据
-                    picturePage = pictureService.search(searchText, current, pageSize);
-                case USER:
-                    //获取用户数据
-                    UserQueryRequest userQueryRequest = new UserQueryRequest();
-                    userQueryRequest.setUserName(searchText);
-                    userPage = userService.listUserVOByPage(userQueryRequest, current, pageSize, request);
-                default:
-            }
+            dataSourceRegistry.doInit();
+            DataSource dataSourceType = dataSourceRegistry.getDataSourceType(type);
+            Page page = dataSourceType.doSearch(searchText, current, pageSize);
+            SearchVO searchVO = new SearchVO();
+            searchVO.setPage(page);
+            return ResultUtils.success(searchVO);
         }
-
-        SearchVO searchVO = new SearchVO();
-        searchVO.setPostList(postPage);
-        searchVO.setPictureList(picturePage);
-        searchVO.setUserList(userPage);
-        return ResultUtils.success(searchVO);
     }
 }
