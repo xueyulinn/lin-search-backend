@@ -26,5 +26,16 @@ public class SearchQueryRequest extends PageRequest implements Serializable {
     private String searchText;
 
 
+    /**
+     * 当前页号
+     */
+    private long page;
+
+    /**
+     * 页面大小
+     */
+    private long pageSize;
+
+
     private static final long serialVersionUID = 1L;
 }

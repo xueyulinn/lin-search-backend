@@ -36,11 +36,11 @@ public class PictureServiceImpl implements PictureService {
             e.printStackTrace();
         }
         System.out.println(doc);
+
         Elements elements = doc.select(".iuscp.isv");
         List<Picture> pictureList = new ArrayList<>();
         for (Element element : elements) {
 
-            System.out.println(element);
             //获取图片地址
             String m = element.select(".iusc").get(0).attr("m");
 

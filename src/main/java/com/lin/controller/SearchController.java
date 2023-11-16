@@ -50,7 +50,7 @@ public class SearchController {
 
         String type = searchQueryRequest.getType();
         String searchText = searchQueryRequest.getSearchText();
-        long current = searchQueryRequest.getCurrent();
+        long pageNum = searchQueryRequest.getPage();
         long pageSize = searchQueryRequest.getPageSize();
         // 限制爬虫
         ThrowUtils.throwIf(pageSize > 20, ErrorCode.PARAMS_ERROR);
@@ -66,15 +66,15 @@ public class SearchController {
             // 获取文章数据
             PostQueryRequest postQueryRequest = new PostQueryRequest();
             postQueryRequest.setSearchText(searchText);
-            postPage = postDataSource.doSearch(searchText, current, pageSize);
+            postPage = postDataSource.doSearch(searchText, pageNum, pageSize);
 
             //获取图片数据
-            picturePage = pictureDataSource.doSearch(searchText, current, pageSize);
+            picturePage = pictureDataSource.doSearch(searchText, pageNum, pageSize);
 
             //获取用户数据
             UserQueryRequest userQueryRequest = new UserQueryRequest();
             userQueryRequest.setUserName(searchText);
-            userPage = userDataSource.doSearch(searchText, current, pageSize);
+            userPage = userDataSource.doSearch(searchText, pageNum, pageSize);
 
             SearchVO searchVO = new SearchVO();
             searchVO.setPostList(postPage);
@@ -85,7 +85,7 @@ public class SearchController {
         } else {
             dataSourceRegistry.doInit();
             DataSource dataSourceType = dataSourceRegistry.getDataSourceType(type);
-            Page page = dataSourceType.doSearch(searchText, current, pageSize);
+            Page page = dataSourceType.doSearch(searchText, pageNum, pageSize);
             SearchVO searchVO = new SearchVO();
             searchVO.setPage(page);
             return ResultUtils.success(searchVO);
